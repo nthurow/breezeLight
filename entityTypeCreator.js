@@ -1,22 +1,26 @@
-function createEntityType(name, namespace, properties) {
+var superclassPrototype = {
+    entityType: function () {
+        return this.entityTypeName;
+    }
+};
+
+function registerTypeFactory(name, namespace, prototype) {
 
     window.types = window.types || {};
     var entityName = name + '_' + (namespace.replace(/\./igm, '_'));
-    var ctor;
+    prototype.entityTypeName = entityName;
 
     if (!window.types[entityName]) {
-        ctor = window.types[entityName] = Function('return function ' + entityName + '() {}')();
+
+        window.types[entityName] = {
+            make: function () {
+                var superclass = Object.create(superclassPrototype);
+                var
+            }
+        };
     } else {
         throw 'An entity with the name ' + entityName + ' already exists.';
     }
-
-    properties.forEach(function (property) {
-        registerEntityProperty(ctor.prototype, property);
-    });
-
-    ctor.prototype._metadata = {
-        properties: properties
-    };
 }
 
 function registerEntityProperty(obj, propertyDef) {
